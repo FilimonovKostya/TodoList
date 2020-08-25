@@ -24,3 +24,4 @@ yarn-error.log*
 
 /.idea
 /debug.log
+debug.log
