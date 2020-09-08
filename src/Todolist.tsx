@@ -13,20 +13,21 @@ type PropsType = {
     removeTask: (id: string) => void
     changeFilter: (value: FilterType) => void
     addTask: (task: string) => void
+    changeStatus: (isDone: boolean, id: string) => void
 }
 
 export function Todolist(props: PropsType) {
 
     let [title, setTitle] = useState('')
-    let [error,setError] = useState<string | null>(null)
+    let [error, setError] = useState<string | null>(null)
 
     const addTask = () => {
         if (title.trim()) {
-           props.addTask(title.trim())
+            props.addTask(title.trim())
             setTitle('')
             setError(null)
-        } else{
-           setError('Введите имя')
+        } else {
+            setError('Введите имя')
         }
     }
 
@@ -53,8 +54,12 @@ export function Todolist(props: PropsType) {
         <ul>
             {
                 props.tasks.map(f => {
+                    const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
+                        let newIsDoneValue = e.currentTarget.checked
+                        props.changeStatus( newIsDoneValue, f.id)
+                    }
                     return (
-                        <li key={f.id}><input type="checkbox" checked={f.isDone}/><span>{f.title}</span>
+                        <li key={f.id}><input type="checkbox" checked={f.isDone} onChange={onChangeHandler}/><span>{f.title}</span>
                             <button onClick={() => props.removeTask(f.id)}>X</button>
                         </li>
                     )
