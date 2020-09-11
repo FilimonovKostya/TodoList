@@ -18,3 +18,7 @@ input{
 .error-message{
   color: red;
 }
+
+.button{
+  background-color: lightgreen;
+}

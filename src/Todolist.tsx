@@ -14,6 +14,7 @@ type PropsType = {
     changeFilter: (value: FilterType) => void
     addTask: (task: string) => void
     changeCheckbox:(id:string, isDone:boolean) => void
+    filter:FilterType
 }
 
 export function Todolist(props: PropsType) {
@@ -29,6 +30,7 @@ debugger
             setError(null)
         } else {
             setError('Введите имя')
+            setTitle('')
         }
     }
 
@@ -36,6 +38,7 @@ debugger
 
     const onKeyPressHandler = (e: KeyboardEvent<HTMLInputElement>) => {
         setError(null)
+
         if (e.key === 'Enter') {
             addTask()
         }
@@ -70,9 +73,9 @@ debugger
             }
         </ul>
         <div>
-            <button onClick={changeFilterAll}>All</button>
-            <button onClick={changeFilterActive}>Active</button>
-            <button onClick={changeFilterComplete}>Completed</button>
+            <button className={props.filter === 'all' ? 'button' : ''} onClick={changeFilterAll}>All</button>
+            <button className={props.filter === 'active' ? 'button' : ''} onClick={changeFilterActive}>Active</button>
+            <button className={props.filter === 'completed' ? 'button' : ''} onClick={changeFilterComplete}>Completed</button>
         </div>
     </div>
 }
