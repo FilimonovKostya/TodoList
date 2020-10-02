@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import './App.css';
 import {Todolist, TaskType} from './Todolist';
 import {v1} from 'uuid';
+import {AddItemForm} from "./AddItemForm";
 
 export type FilterType = 'all' | 'active' | 'completed'
 type TasksStateType = {
@@ -40,7 +41,7 @@ function App() {
 
     function removeTask(id: string, todoListID: string) {
         let todoListTasks = tasks[todoListID] // достали нужный массив ТудуЛиста
-        tasks[todoListID] = todoListTasks.filter( t => t.id !== id)//перезаписали  и оттфильтровали
+        tasks[todoListID] = todoListTasks.filter(t => t.id !== id)//перезаписали  и оттфильтровали
         setTasks({...tasks})//сетаем и перерерисовываем
     }
 
@@ -54,8 +55,8 @@ function App() {
 
     function changeCheckbox(id: string, taskIsDone: boolean, todoListID: string) {
         let todoListTasks = tasks[todoListID]
-        let task = todoListTasks.find(t=> t.id === id) //нашли нужную таску
-        if(task){
+        let task = todoListTasks.find(t => t.id === id) //нашли нужную таску
+        if (task) {
             task.isDone = taskIsDone // перезаписываем значение
             setTasks({...tasks})//перерисока
         }
@@ -71,14 +72,29 @@ function App() {
 
     }
 
-    function removeTodoList(id:string){
-        setTodoList(todoLists.filter(tl=> tl.id !== id))
+    function removeTodoList(id: string) {
+        setTodoList(todoLists.filter(tl => tl.id !== id))
         delete tasks[id]
         setTasks({...tasks})
     }
 
+    function addTodoList(title: string) {
+        let newTodolistID = v1()
+        let newTodoList: TodolistType = {
+            id: newTodolistID,
+            title: title,
+            filter: 'all'
+        }
+        setTodoList([...todoLists, newTodoList])
+        setTasks({
+            ...tasks,
+            [newTodolistID]: []
+        })
+    }
+
     return (
         <div className="App">
+            <AddItemForm addItem={addTodoList}/>
             {todoLists.map(tl => {
                 let allTodoListTasks = tasks[tl.id]
                 let tasksForTodolist = allTodoListTasks
