@@ -72,6 +72,15 @@ function App() {
 
     }
 
+    function changeTaskTitle(id: string, newTitle: string, todolistID: string) {
+        let todoList = tasks[todolistID]
+        let task = todoList.find(f=> f.id === id)
+        if(task) {
+            task.title = newTitle
+            setTasks({...tasks})
+        }
+    }
+
     function removeTodoList(id: string) {
         setTodoList(todoLists.filter(tl => tl.id !== id))
         delete tasks[id]
@@ -113,7 +122,7 @@ function App() {
                                  key={tl.id}
                                  todoID={tl.id}
                                  removeTodoList={removeTodoList}
-
+                                 changeTaskTitle={changeTaskTitle}
                                  tasks={tasksForTodolist}
                                  removeTask={removeTask}
                                  changeFilter={changeFilter}
