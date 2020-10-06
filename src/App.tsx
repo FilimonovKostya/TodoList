@@ -19,7 +19,7 @@ function App() {
         title: string
         filter: FilterType
     }
-    let [todoLists, setTodoList] = useState<Array<TodolistType>>([
+    let [todoLists, setTodoLists] = useState<Array<TodolistType>>([
         {id: todoListId1, title: 'What to learn', filter: 'all'},
         {id: todoListId2, title: 'What to buy', filter: 'all'}
     ])
@@ -67,22 +67,30 @@ function App() {
         let todoList = todoLists.find(tl => tl.id === todolistID)
         if (todoList) {
             todoList.filter = value
-            setTodoList([...todoLists])
+            setTodoLists([...todoLists])
         }
 
     }
 
     function changeTaskTitle(id: string, newTitle: string, todolistID: string) {
         let todoList = tasks[todolistID]
-        let task = todoList.find(f=> f.id === id)
-        if(task) {
+        let task = todoList.find(f => f.id === id)
+        if (task) {
             task.title = newTitle
             setTasks({...tasks})
         }
     }
 
+    function changeTodoListTitle(id: string, newTitle: string) {
+        const todoList = todoLists.find(f => f.id === id)
+        if (todoList) {
+            todoList.title = newTitle
+            setTodoLists([...todoLists])
+        }
+    }
+
     function removeTodoList(id: string) {
-        setTodoList(todoLists.filter(tl => tl.id !== id))
+        setTodoLists(todoLists.filter(tl => tl.id !== id))
         delete tasks[id]
         setTasks({...tasks})
     }
@@ -94,7 +102,7 @@ function App() {
             title: title,
             filter: 'all'
         }
-        setTodoList([...todoLists, newTodoList])
+        setTodoLists([...todoLists, newTodoList])
         setTasks({
             ...tasks,
             [newTodolistID]: []
@@ -129,6 +137,7 @@ function App() {
                                  addTask={addTask}
                                  changeCheckbox={changeCheckbox}
                                  filter={tl.filter}
+                                 changeTodoListTitle={changeTodoListTitle}
                 />
             })}
         </div>
