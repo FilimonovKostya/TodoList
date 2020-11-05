@@ -1,4 +1,12 @@
-import {addTaskAC, addTodolistAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC, tasksReducer} from "./tasks-reducers"
+import {
+    addTaskAC,
+    addTodolistAC,
+    changeFilterTaskAC,
+    changeTaskStatusAC,
+    changeTaskTitleAC,
+    removeTaskAC,
+    tasksReducer
+} from "./tasks-reducers"
 import {TasksStateType} from "../App";
 
 let startState: TasksStateType = {}
@@ -101,3 +109,12 @@ test('new array should be added when new todolist is added', () => {
     // @ts-ignore
     expect(endState[newKey]).toEqual([]);
 });
+
+
+test('Changed filter Task', () => {
+
+    const endState = tasksReducer(startState, changeFilterTaskAC('1','todolistId2', 'completed' ))
+
+    expect(endState['todolistId2'][1].isDone).toBe(true)
+
+})

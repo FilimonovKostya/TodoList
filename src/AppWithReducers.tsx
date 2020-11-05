@@ -14,7 +14,13 @@ import {
 } from "@material-ui/core";
 import MenuIcon from "@material-ui/icons/Menu";
 import Paper from "@material-ui/core/Paper";
-import {addTodoListAC, changeTitleTodoListAC, removeTodoListAC, todoListReducer} from "./state/todolist-reducer";
+import {
+  addTodoListAC,
+  changeFilterTodoListAC,
+  changeTitleTodoListAC,
+  removeTodoListAC,
+  todoListReducer
+} from "./state/todolist-reducer";
 import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC, tasksReducer} from "./state/tasks-reducers";
 
 export type FilterType = "all" | "active" | "completed";
@@ -83,7 +89,7 @@ function AppWithReducers() {
   }
 
   function changeFilter(value: FilterType, todolistID: string) {
-
+    dispatchTodoList(changeFilterTodoListAC(value, todolistID))
   }
 
   function changeTaskTitle(id: string, newTitle: string, todolistID: string) {
