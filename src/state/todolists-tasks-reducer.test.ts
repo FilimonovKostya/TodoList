@@ -7,7 +7,6 @@ test('ids should be equals', () => {
     const startTodolistsState: Array<TodolistType> = [];
 
 
-
     const action = addTodolistAC("new todolist");
 
     const endTasksState = tasksReducer(startTasksState, action)

@@ -44,22 +44,6 @@ function AppWithReducers() {
     { id: todoListId2, title: "What to buy", filter: "all" },
   ]);
 
-  // let [tasks, setTasks] = useState<TasksStateType>({
-  //   [todoListId1]: [
-  //     { id: v1(), title: "HTML&CSS", isDone: true },
-  //     { id: v1(), title: "JS", isDone: true },
-  //     { id: v1(), title: "ReactJS", isDone: false },
-  //     { id: v1(), title: "Sql", isDone: true },
-  //     { id: v1(), title: "Mocha", isDone: true },
-  //     { id: v1(), title: "Native", isDone: false },
-  //   ],
-  //   [todoListId2]: [
-  //     { id: v1(), title: "Milk", isDone: true },
-  //     { id: v1(), title: "Bread", isDone: false },
-  //   ],
-  // });
-
-
   let [tasks, dispatchTasks] = useReducer(tasksReducer,{
     [todoListId1]:[
       { id: v1(), title: "HTML&CSS", isDone: true },

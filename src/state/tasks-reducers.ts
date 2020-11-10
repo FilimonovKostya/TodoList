@@ -56,7 +56,7 @@ type ActionsType =
     | RemoveTodoListActionType
 
 
-const initialState:TasksStateType = {}
+const initialState: TasksStateType = {}
 
 export const tasksReducer = (state: TasksStateType = initialState, action: ActionsType) => {
     switch (action.type) {
@@ -69,29 +69,33 @@ export const tasksReducer = (state: TasksStateType = initialState, action: Actio
 
         case "REMOVE-TASK":
             let nedTodo = state[action.todoListID]
+            state[action.todoListID] = nedTodo.map(f => f)
             state[action.todoListID] = nedTodo.filter(f => f.id !== action.id)
             return {...state}
 
-        case "CHANGE-STATUS-TASK":
-            let statusTodo = state[action.todoLisId].find(f => f.id === action.id)
-            if (statusTodo) {
-                statusTodo.isDone = action.isDone
-            }
+        case "CHANGE-STATUS-TASK": {
+            let todoListTasks = state[action.todoLisId]
+            state[action.todoLisId] = todoListTasks
+                .map(t => t.id === action.id
+                    ? {...t, isDone: action.isDone}
+                    : t)
             return {...state}
+        }
+        case "CHANGE-TITLE-TASK": {
+            let todolistTasks = state[action.todoListID]
+            state[action.todoListID] = todolistTasks
+                .map(t => t.id === action.id
+                    ? {...t, title: action.newTitle}
+                    : t)
+            return ({...state})
+        }
 
-        case "CHANGE-TITLE-TASK":
-            let mustTodo = state[action.todoListID].find(f => f.id === action.id)
-            if (mustTodo) {
-                mustTodo.title = action.newTitle
-            }
-            return {...state}
-
-
-        case "ADD-TODOLIST":
+        case "ADD-TODOLIST": {
             return {
                 ...state,
                 [action.todoListID]: []
             }
+        }
         case "REMOVE-TODOLIST":
             delete state[action.id]
             return {...state}
