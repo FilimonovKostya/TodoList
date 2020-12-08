@@ -7,7 +7,8 @@ import {todoListReducer} from "./todolist-reducer";
 
 // мы задаём структуру нашего единственного объекта-состояния
 const rootReducer = combineReducers({
-    tasks: tasksReducer, todolists: todoListReducer
+    tasks: tasksReducer,
+    todolists: todoListReducer
 })
 // непосредственно создаём store
 export const store = createStore(rootReducer);
