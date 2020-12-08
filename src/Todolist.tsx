@@ -62,12 +62,12 @@ export const Todolist = React.memo((props: PropsType) => {
         </div>
         <ul>
             {
-                props.tasks.map(f => <Task task={f}
-                                           changeCheckbox={props.changeCheckbox}
-                                           changeTaskTitle={props.changeTaskTitle}
-                                           removeTask={props.removeTask}
-                                           todoID={props.todoID}
-                                           key={f.id}
+                tasksForTodolist.map(f => <Task task={f}
+                                                changeCheckbox={props.changeCheckbox}
+                                                changeTaskTitle={props.changeTaskTitle}
+                                                removeTask={props.removeTask}
+                                                todoID={props.todoID}
+                                                key={f.id}
                 />)
             }
         </ul>
