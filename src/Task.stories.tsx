@@ -11,28 +11,30 @@ export default {
     component: Task,
 } as Meta;
 
-const removeCallBack = action('Remove button inside Task clicked')
-const changeStatusCallBack = action('Status changed inside Task ')
-const changeTitleCallBack = action('Title changed insied Task ')
+
+const removeCallBack = action('Remove task on button')
+const changeStatusCallBack = action('Status was changed')
+const changeTitleCallBack = action('Title was changed')
 
 const Template: Story<TaskPropsType> = (args) => <Task {...args}/>
 
 const baseArg = {
     removeTask: removeCallBack,
-    changeTaskStatus: changeStatusCallBack,
+    changeCheckbox: changeStatusCallBack,
     changeTaskTitle: changeTitleCallBack
 }
 
 export const TaskIsDoneExample = Template.bind({})
 TaskIsDoneExample.args = {
-   ...baseArg,
+    ...baseArg,
     task: {id: '1', isDone: true, title: 'Css'},
-    todoID: 'todolistId1'
+    todoID: 'todolistId1',
+
 }
 
 export const TaskIsNotDoneExample = Template.bind({})
 TaskIsNotDoneExample.args = {
     ...baseArg,
     task: {id: '2', isDone: false, title: 'JS'},
-    todoID: 'todolistId2'
+    todoID: 'todolistId2',
 }
