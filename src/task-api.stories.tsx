@@ -8,7 +8,7 @@ export default {
 }
 
 
-export const getTask = () => {
+export const GetTask = () => {
     const [state, setState] = useState<any>(null)
     useEffect(() => {
 
@@ -17,19 +17,20 @@ export const getTask = () => {
         taskAPI().getTask(todoListID)
             .then(res => {
                 debugger
-                setState(res.data)
-            })
+                setState(res.data.items)
+            },)
     }, [])
 
-    return <div>{JSON.stringify(state)}</div>
+     return <div>{JSON.stringify(state)}</div>
+
 }
 
-export const createTask = () => {
+export const CreateTask = () => {
     const [state, setState] = useState<any>(null)
 
     useEffect(() => {
         const todoListID = '5734efd1-6495-4d71-bb4d-a75f9ed4de40'
-        const titleTask = 'My TEST ONE'
+        const titleTask = 'NEW CREATE TASK BY ME ---->'
 
         taskAPI().createTask(todoListID, titleTask)
             .then(res => {
@@ -37,15 +38,16 @@ export const createTask = () => {
             })
     }, [])
 
-    return <div>{JSON.stringify(state)}</div>
+     return <div>{JSON.stringify(state)}</div>
+
 }
 
 
-export const deleteTask = () => {
+export const DeleteTask = () => {
     const [state, setState] = useState<any>(null)
 
     useEffect(() => {
-        const taskID = '4baff3a1-cbbf-469a-9552-dc2375ffa197'
+        const taskID = '31fe543f-d77a-4a94-a49b-d76fcebd21b7'
         const todoListID = '5734efd1-6495-4d71-bb4d-a75f9ed4de40'
 
         taskAPI().deleteTask(todoListID, taskID)
@@ -58,14 +60,15 @@ export const deleteTask = () => {
 }
 
 
-export const updateTitleTask = () => {
+export const UpdateTitleTask = () => {
     const [state, setState] = useState<any>(null)
 
     useEffect(() => {
-        const taskID = '4baff3a1-cbbf-469a-9552-dc2375ffa197'
+        const taskID = 'd2294579-c6c1-4e1a-b0b0-51862d044203'
         const todoListID = '5734efd1-6495-4d71-bb4d-a75f9ed4de40'
+        const newTitle = 'NEW-TITLE CHAAAAAAAAAANGE'
 
-        taskAPI().updateTitleTask(todoListID, taskID)
+        taskAPI().updateTitleTask(todoListID, taskID, newTitle)
             .then(res => {
                 setState(res.data)
             })

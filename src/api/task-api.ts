@@ -17,8 +17,19 @@ type TaskType = {
 type ResponseTaskType = {
     items: Array<TaskType>
     totalCount: number
-    error: string
+    error: string | null
 }
+
+ type UpdateTaskType = {
+    title: string
+    description: string
+    completed: boolean
+    status: number
+    priority: number
+    startDate: string
+    deadline: string
+}
+
 
 const instance = Axios.create({
     baseURL: 'https://social-network.samuraijs.com/api/1.1/todo-lists/',
@@ -40,8 +51,8 @@ export const taskAPI = () => {
         deleteTask(todolistID: string, taskID: string) {
             return instance.delete(`${todolistID}/tasks/${taskID}`)
         },
-        updateTitleTask(todolistID: string, taskID: string) {
-            return instance.delete(`${todolistID}/tasks/${taskID}`)
+        updateTitleTask(todolistID: string, taskID: string, title: string) {
+            return instance.put<UpdateTaskType>(`${todolistID}/tasks/${taskID}`, {title})
         }
     }
 }
