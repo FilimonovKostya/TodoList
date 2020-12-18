@@ -216,10 +216,10 @@ function App() {
                         let tasksForTodolist = allTodoListTasks;
 
                         if (tl.filter === "active") {
-                            tasksForTodolist = allTodoListTasks.filter((f) => f.status);
+                            tasksForTodolist = allTodoListTasks.filter((f) => f.status === TaskStatus.New);
                         }
                         if (tl.filter === "completed") {
-                            tasksForTodolist = allTodoListTasks.filter((f) => !f.status);
+                            tasksForTodolist = allTodoListTasks.filter((f) => f.status === TaskStatus.Completed);
                         }
 
                         return (
