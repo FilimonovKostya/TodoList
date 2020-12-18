@@ -66,7 +66,7 @@ export const tasksReducer = (state: TasksStateType = initialState, action: Actio
             let task: TaskType = {
                 id: v1(),
                 title: action.title,
-                status: TaskStatus.Completed,
+                status: TaskStatus.New,
                 todoListId: action.id,
                 addedDate: '',
                 startDate: '',
@@ -89,7 +89,7 @@ export const tasksReducer = (state: TasksStateType = initialState, action: Actio
             let todoListTasks = state[action.todoLisId]
             state[action.todoLisId] = todoListTasks
                 .map(t => t.id === action.id
-                    ? {...t, isDone: action.status}
+                    ? {...t, status: action.status}
                     : t)
             return {...state}
         }
