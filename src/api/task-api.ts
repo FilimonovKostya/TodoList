@@ -1,4 +1,6 @@
 import Axios from "axios";
+import {ResponseType} from './todolist-api'
+
 
 export enum TaskStatus {
     New = 0,
@@ -18,7 +20,6 @@ export enum TaskPriorities {
 export type TaskType = {
     description: string
     title: string
-    // completed: boolean
     status: TaskStatus
     priority: TaskPriorities
     startDate: string
@@ -58,15 +59,17 @@ const instance = Axios.create({
 export const taskAPI = () => {
     return {
         getTask(todoListID: string) {
+            debugger
             return instance.get<ResponseTaskType>(`${todoListID}/tasks`)
         },
         createTask(todolistID: string, title: string) {
-            return instance.post(`${todolistID}/tasks`, {title})
+            debugger
+            return instance.post<ResponseType<{ item: TaskType }>>(`${todolistID}/tasks`, {title})
         },
         deleteTask(todolistID: string, taskID: string) {
             return instance.delete(`${todolistID}/tasks/${taskID}`)
         },
-        updateTitleTask(todolistID: string, taskID: string, title: string) {
+        updateTitleTask(todolistID: string, taskID: string, title: {}) {
             return instance.put<UpdateTaskType>(`${todolistID}/tasks/${taskID}`, {title})
         }
     }

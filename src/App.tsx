@@ -119,7 +119,7 @@ function App() {
     }
 
     function addTask(title: string, todoListID: string) {
-        let task:TaskType = {
+        let task: TaskType = {
             id: v1(),
             title: title,
             status: TaskStatus.New,
