@@ -8,6 +8,7 @@ import {
     tasksReducer
 } from "./tasks-reducers"
 import {TasksStateType} from "../App";
+import {TaskPriorities, TaskStatus} from "../api/task-api";
 
 let startState: TasksStateType = {}
 
@@ -15,14 +16,76 @@ beforeEach(() => {
 
     startState = {
         "todolistId1": [
-            {id: "1", title: "CSS", isDone: false},
-            {id: "2", title: "JS", isDone: true},
-            {id: "3", title: "React", isDone: false}
+            {
+                id: "1", title: "CSS",
+                status: TaskStatus.New,
+                todoListId: 'todolistId1',
+                addedDate: '',
+                startDate: '',
+                deadline: '',
+                order: 0,
+                priority: TaskPriorities.Low,
+                description: ''
+            },
+
+            {
+                id: "2", title: "JS",
+                status: TaskStatus.Completed,
+                todoListId: 'todolistId1',
+                addedDate: '',
+                startDate: '',
+                deadline: '',
+                order: 0,
+                priority: TaskPriorities.Low,
+                description: ''
+            },
+            {
+                id: "3",
+                title: "React",
+                status: TaskStatus.New,
+                todoListId: 'todolistId1',
+                addedDate: '',
+                startDate: '',
+                deadline: '',
+                order: 0,
+                priority: TaskPriorities.Low,
+                description: ''
+            }
         ],
         "todolistId2": [
-            {id: "1", title: "bread", isDone: false},
-            {id: "2", title: "milk", isDone: true},
-            {id: "3", title: "tea", isDone: false}
+            {
+                id: "1", title: "bread",
+                status: TaskStatus.New,
+                todoListId: 'todolistId2',
+                addedDate: '',
+                startDate: '',
+                deadline: '',
+                order: 0,
+                priority: TaskPriorities.Low,
+                description: ''
+            },
+            {
+                id: "2", title: "milk",
+                status: TaskStatus.Completed,
+                todoListId: 'todolistId2',
+                addedDate: '',
+                startDate: '',
+                deadline: '',
+                order: 0,
+                priority: TaskPriorities.Low,
+                description: ''
+            },
+            {
+                id: "3", title: "tea",
+                status: TaskStatus.New,
+                todoListId: 'todolistId2',
+                addedDate: '',
+                startDate: '',
+                deadline: '',
+                order: 0,
+                priority: TaskPriorities.Low,
+                description: ''
+            }
         ]
     };
 })
@@ -59,14 +122,14 @@ test('Task removed', () => {
 
 test('status of specified task should be changed', () => {
 
-    const action = changeTaskStatusAC('todolistId2', "2", false);
+    const action = changeTaskStatusAC('todolistId2', "2", TaskStatus.New);
 
     const endState = tasksReducer(startState, action)
 
     // @ts-ignore
     expect(endState['todolistId2'].length).toBe(3);
     // @ts-ignore
-    expect(endState['todolistId2'][1].isDone).toBe(false);
+    expect(endState['todolistId2'][1].status).toBe(TaskStatus.New);
     // @ts-ignore
     expect(endState['todolistId2'][1].title).toBe('milk');
 });
@@ -91,7 +154,6 @@ test('Task title was changed', () => {
 test('new array should be added when new todolist is added', () => {
 
 
-
     const action = addTodolistAC("new todolist");
 
     const endState = tasksReducer(startState, action)
@@ -113,8 +175,8 @@ test('new array should be added when new todolist is added', () => {
 
 test('Changed filter Task', () => {
 
-    const endState = tasksReducer(startState, changeFilterTaskAC('1','todolistId2', 'completed' ))
+    const endState = tasksReducer(startState, changeFilterTaskAC('1', 'todolistId2', 'completed'))
 
-    expect(endState['todolistId2'][1].isDone).toBe(true)
+    expect(endState['todolistId2'][1].status).toBe(TaskStatus.Completed)
 
 })
