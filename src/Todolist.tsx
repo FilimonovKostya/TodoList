@@ -5,6 +5,7 @@ import {EditableSpan} from "./EditableSpan";
 import {Button, IconButton} from "@material-ui/core";
 import DeleteIcon from '@material-ui/icons/Delete';
 import {Task} from "./Task";
+import {TaskStatus} from "./api/task-api";
 
 
 type PropsType = {
@@ -13,7 +14,7 @@ type PropsType = {
     removeTask: (id: string, todoListID: string) => void
     changeFilter: (value: FilterType, todolistID: string) => void
     addTask: (title: string, todoListID: string) => void
-    changeCheckbox: (id: string, taskIsDone: boolean, todoListID: string) => void
+    changeCheckbox:(id: string, status: TaskStatus, todoListID: string) => void
     todoID: string
     filter: FilterType
     removeTodoList: (id: string) => void
