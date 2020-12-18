@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./App.css";
-import { TaskType, Todolist } from "./Todolist";
+import { Todolist } from "./Todolist";
 import { v1 } from "uuid";
 import { AddItemForm } from "./AddItemForm";
 import {
@@ -14,24 +14,20 @@ import {
 } from "@material-ui/core";
 import MenuIcon from "@material-ui/icons/Menu";
 import Paper from "@material-ui/core/Paper";
+import { TaskType } from "./api/task-api";
+import { TodoListType } from "./api/todolist-api";
 
-export type FilterType = "all" | "active" | "completed";
+
 export type TasksStateType = {
   [key: string]: Array<TaskType>;
 };
 
 
-export type TodolistType = {
-    id: string;
-    title: string;
-    filter: FilterType;
-  };
-
 function App() {
   let todoListId1 = v1();
   let todoListId2 = v1();
 
-  let [todoLists, setTodoLists] = useState<Array<TodolistType>>([
+  let [todoLists, setTodoLists] = useState<Array<TodoListType>>([
     { id: todoListId1, title: "What to learn", filter: "all" },
     { id: todoListId2, title: "What to buy", filter: "all" },
   ]);

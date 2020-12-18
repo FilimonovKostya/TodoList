@@ -7,12 +7,6 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import {Task} from "./Task";
 
 
-export type TaskType = {
-    id: string
-    title: string
-    isDone: boolean
-}
-
 type PropsType = {
     title: string
     tasks: Array<TaskType>
