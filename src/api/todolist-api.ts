@@ -1,13 +1,11 @@
 import Axios from "axios";
 
-
 export type TodoListType = {
     id: string
     addedDate: string
     order: number
     title: string
 }
-
 
 export type ResponseType<D = {}> = {
     resultCode: number

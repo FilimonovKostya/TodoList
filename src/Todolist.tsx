@@ -32,7 +32,6 @@ export const Todolist = React.memo((props: PropsType) => {
                 // props.addTask(props.todoID, title)
     }, [])
 
-
     const dispatch = useDispatch()
 
     useEffect(() => {
