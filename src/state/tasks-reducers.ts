@@ -1,9 +1,10 @@
-import {TasksStateType} from "../App";
+
 import {v1} from "uuid";
 import {taskAPI, TaskStatus, TaskType} from "../api/task-api";
 import {FilterType, setTodoListsAC} from "./todolist-reducer";
 import {Dispatch} from "redux";
 import {AppRootStateType} from "./store";
+import {TasksStateType} from "../app/App";
 
 type ActionsType =
     | ReturnType<typeof setTodoListsAC>

@@ -7,7 +7,7 @@ import {
     removeTaskAC,
     tasksReducer
 } from "./tasks-reducers"
-import {TasksStateType} from "../App";
+import {TasksStateType} from "../components/trash/App";
 import {TaskPriorities, TaskStatus} from "../api/task-api";
 
 let startState: TasksStateType = {}
