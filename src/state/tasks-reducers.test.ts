@@ -92,17 +92,26 @@ beforeEach(() => {
 
 test('New Add Task', () => {
 
+    const action = addTaskAC({
+        todoListId: "todolistId2",
+        title: "juce",
+        status: TaskStatus.New,
+        addedDate: "",
+        deadline: "",
+        description: "",
+        order: 0,
+        priority: 0,
+        startDate: "",
+        id: "id exists"
+    });
 
-    const endState = tasksReducer(startState, addTaskAC('New Add Task', 'todolistId2'))
+    const endState = tasksReducer(startState, action)
 
-    // @ts-ignore
-    expect(endState['todolistId2'].length).toBe(4)
-    // @ts-ignore
-    expect(endState['todolistId2'][0].title).toBe('New Add Task')
-    // @ts-ignore
-    expect(endState['todolistId2'][1].title).toBe('bread')
-    // @ts-ignore
-    expect(endState['todolistId2'][2].title).toBe('milk')
+    expect(endState["todolistId1"].length).toBe(3);
+    expect(endState["todolistId2"].length).toBe(4);
+    expect(endState["todolistId2"][0].id).toBeDefined();
+    expect(endState["todolistId2"][0].title).toBe("juce");
+    expect(endState["todolistId2"][0].status).toBe(TaskStatus.New);
 })
 
 test('Task removed', () => {
