@@ -1,4 +1,3 @@
-
 import {v1} from "uuid";
 import {taskAPI, TaskStatus, TaskType} from "../api/task-api";
 import {FilterType, setTodoListsAC} from "./todolist-reducer";
@@ -44,7 +43,7 @@ export const tasksReducer = (state: TasksStateType = initialState, action: Actio
             return {
                 ...state, [action.todolistID]: state[action.todolistID].map(t => t.id === action.id ? {...t, title: action.title} : t)
 
-        }
+            }
         case "ADD-TODOLIST":
             return {
                 ...state, [action.todoListID]: []
@@ -119,9 +118,12 @@ export const createTaskTC = (title: string, todolistId: string) => (dispatch: Di
 export const changeTaskTitleTC = (todolistID: string, taskID: string, title: string) => (dispatch: Dispatch<ActionsType>) => {
     dispatch(setAppStatusAC('loading'))
     taskAPI().updateTitleTask(todolistID, taskID, title)
-        .then(() => {
-            dispatch(changeTaskTitleAC(todolistID, taskID, title))
-            dispatch(setAppStatusAC('succeeded'))
+        .then((res) => {
+
+                dispatch(changeTaskTitleAC(todolistID, taskID, title))
+                dispatch(setAppStatusAC('succeeded'))
+
+
         })
 }
 
