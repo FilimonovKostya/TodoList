@@ -1,9 +1,12 @@
 import React from "react";
 import "./App.css";
 import {TaskType} from "../api/task-api";
-import {AppBar, Button, Container, IconButton, Toolbar} from "@material-ui/core";
+import {AppBar, Button, Container, IconButton, LinearProgress, Toolbar} from "@material-ui/core";
 import {TodolistList} from "../features/Todolists/TodolistList";
 import MenuIcon from "@material-ui/icons/Menu";
+import {useSelector} from "react-redux";
+import {AppRootStateType} from "../state/store";
+import {RequestStatusType} from "./app-reducer";
 
 export type FilterType = "all" | "active" | "completed";
 
@@ -19,6 +22,8 @@ export type TodolistType = {
 
 function App() {
 
+    const status = useSelector<AppRootStateType, RequestStatusType>(state => state.app.status)
+
     return (
         <div className="App">
 
@@ -29,6 +34,7 @@ function App() {
                     </IconButton>
                     <Button color="inherit">Login</Button>
                 </Toolbar>
+                {status === 'loading' && <LinearProgress color="secondary"/>}
             </AppBar>
             <Container fixed>
                 <TodolistList/>
