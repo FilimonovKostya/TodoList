@@ -7,6 +7,7 @@ import MenuIcon from "@material-ui/icons/Menu";
 import {useSelector} from "react-redux";
 import {AppRootStateType} from "../state/store";
 import {RequestStatusType} from "./app-reducer";
+import {ErrorSnackBar} from "../components/ErrorSnackBar/ErrorSnackBar";
 
 export type FilterType = "all" | "active" | "completed";
 
@@ -21,12 +22,11 @@ export type TodolistType = {
 };
 
 function App() {
-
     const status = useSelector<AppRootStateType, RequestStatusType>(state => state.app.status)
 
     return (
         <div className="App">
-
+            <ErrorSnackBar/>
             <AppBar position="static">
                 <Toolbar>
                     <IconButton edge="start" color="inherit" aria-label="menu">
