@@ -16,11 +16,13 @@ import {AddItemForm} from "../../components/AddItemForm/AddItemForm";
 import Paper from "@material-ui/core/Paper";
 import {Todolist} from "./Todolist/Todolist";
 import {FilterType, TasksStateType} from "../../app/App";
+import {RequestStatusType} from "../../app/app-reducer";
 
 export const TodolistList = () => {
 
     const todoLists = useSelector<AppRootStateType, Array<TodoListDomainType>>(state => state.todolists)
     const tasks = useSelector<AppRootStateType, TasksStateType>(state => state.tasks)
+    const status = useSelector<AppRootStateType, RequestStatusType>(state => state.app.status)
     const dispatch = useDispatch()
 
     useEffect(() => {
@@ -62,7 +64,7 @@ export const TodolistList = () => {
 
     return <>
         <Grid style={{padding: '15px'}}>
-            <AddItemForm addItem={addTodoList}/>
+            <AddItemForm addItem={addTodoList} disabled={status === 'loading'} />
         </Grid>
         <Grid container={true} spacing={5}>
             {
@@ -72,7 +74,8 @@ export const TodolistList = () => {
 
                         <Grid item={true} key={tl.id}> {/* //ячейки*/}
                             <Paper style={{padding: '15px'}} elevation={3}>
-                                <Todolist title={tl.title}
+                                <Todolist entifyStatus={tl.entityStatus}
+                                          title={tl.title}
                                           tasks={allTodolistTasks}
                                           removeTask={removeTask}
                                           changeFilter={changeFilter}

@@ -59,11 +59,11 @@ const instance = Axios.create({
 export const taskAPI = () => {
     return {
         getTask(todoListID: string) {
-            debugger
+
             return instance.get<ResponseTaskType>(`${todoListID}/tasks`)
         },
         createTask(todolistID: string, title: string) {
-            debugger
+
             return instance.post<ResponseType<{ item: TaskType }>>(`${todolistID}/tasks`, {title})
         },
         deleteTask(todolistID: string, taskID: string) {

@@ -7,7 +7,7 @@ type InitialStateType = {
 
 const initialState: InitialStateType = {
     status: 'loading',
-    error: 'ERROR'
+    error: null
 }
 
 export const appReducer = (state: InitialStateType = initialState, action: ActionsType): InitialStateType => {

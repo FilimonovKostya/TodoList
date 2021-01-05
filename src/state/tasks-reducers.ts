@@ -97,7 +97,7 @@ export const removeTaskTC = (todoListID: string, taskID: string,) => (dispatch: 
 
 export const createTaskTC = (title: string, todolistId: string) => (dispatch: Dispatch<ActionsType>) => {
     dispatch(setAppStatusAC('loading'))
-    taskAPI().createTask(todolistId, title)
+    taskAPI().createTask(title, todolistId)
         .then(res => {
             if (res.data.resultCode === 0) {
                 const task = res.data.data.item
@@ -112,18 +112,18 @@ export const createTaskTC = (title: string, todolistId: string) => (dispatch: Di
                 dispatch(setAppStatusAC('failed'))
             }
         })
+        .catch(error => {
+            dispatch(setAppErrorAC(error.message))
+            dispatch(setAppStatusAC('failed'))
+        })
 }
-
 
 export const changeTaskTitleTC = (todolistID: string, taskID: string, title: string) => (dispatch: Dispatch<ActionsType>) => {
     dispatch(setAppStatusAC('loading'))
     taskAPI().updateTitleTask(todolistID, taskID, title)
         .then((res) => {
-
                 dispatch(changeTaskTitleAC(todolistID, taskID, title))
                 dispatch(setAppStatusAC('succeeded'))
-
-
         })
 }
 
@@ -138,7 +138,6 @@ export const updateTaskStatusTC = (taskId: string, todolistId: string, status: T
         const task = tasksForCurrentTodolist.find(t => {
             return t.id === taskId
         })
-
 
         if (task) {
             dispatch(setAppStatusAC('loading'))
