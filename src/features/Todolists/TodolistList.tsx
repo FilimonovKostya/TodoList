@@ -9,13 +9,13 @@ import {
     TodoListDomainType
 } from "../../state/todolist-reducer";
 import React, {useCallback, useEffect} from "react";
-import {changeTaskStatusAC, changeTaskTitleAC, createTaskTC, removeTaskAC} from "../../state/tasks-reducers";
-import {TaskStatus} from "../../api/task-api";
+import {createTaskTC, removeTaskTC, TasksStateType, updateTaskTC} from "../../state/tasks-reducers";
 import {Grid} from "@material-ui/core";
 import {AddItemForm} from "../../components/AddItemForm/AddItemForm";
 import Paper from "@material-ui/core/Paper";
 import {Todolist} from "./Todolist/Todolist";
-import {FilterType, TasksStateType} from "../../app/App";
+import {FilterType} from "../../app/App";
+import {TaskStatuses} from "../../api/todolist-api";
 import {RequestStatusType} from "../../app/app-reducer";
 
 export const TodolistList = () => {
@@ -30,7 +30,7 @@ export const TodolistList = () => {
     }, [dispatch])
 
     const removeTask = useCallback((id: string, todoListID: string) => {
-        const thunk = removeTaskAC(id, todoListID)
+        const thunk = removeTaskTC(todoListID, id)
         dispatch(thunk)
     }, [dispatch])
 
@@ -38,20 +38,21 @@ export const TodolistList = () => {
         dispatch(createTaskTC(todoListID, title))
     }, [dispatch])
 
-    const changeCheckbox = useCallback((id: string, status: TaskStatus, todoListID: string) => {
-        dispatch(changeTaskStatusAC(todoListID, id, status))
+    const changeStatus = useCallback((id: string, todoListID: string, status: TaskStatuses) => {
+        dispatch(updateTaskTC(id, todoListID, {status}))
     }, [dispatch])
 
     const changeFilter = useCallback((value: FilterType, todolistID: string) => {
         dispatch(changeFilterTodoListAC(value, todolistID))
     }, [dispatch])
 
-    const changeTaskTitle = useCallback((id: string, newTitle: string, todolistID: string) => {
-        dispatch(changeTaskTitleAC(todolistID, id, newTitle))
+    const changeTaskTitle = useCallback((id: string, todolistID:string , title: string) => {
+        debugger
+        dispatch(updateTaskTC(id, todolistID, {title}))
     }, [dispatch])
 
-    const changeTodoListTitle = useCallback((newTitle: string, id: string) => {
-        dispatch(changeTitleTodoListTC(newTitle, id))
+    const changeTodoListTitle = useCallback((id: string, newTitle: string) => {
+        dispatch(changeTitleTodoListTC(id, newTitle))
     }, [dispatch])
 
     const removeTodoList = useCallback((id: string) => {
@@ -80,7 +81,7 @@ export const TodolistList = () => {
                                           removeTask={removeTask}
                                           changeFilter={changeFilter}
                                           addTask={addTask}
-                                          changeCheckbox={changeCheckbox}
+                                          changeStatus={changeStatus}
                                           todoID={tl.id}
                                           filter={tl.filter}
                                           removeTodoList={removeTodoList}

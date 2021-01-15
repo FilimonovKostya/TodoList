@@ -1,6 +1,5 @@
 import React from "react";
 import "./App.css";
-import {TaskType} from "../api/task-api";
 import {AppBar, Button, Container, IconButton, LinearProgress, Toolbar} from "@material-ui/core";
 import {TodolistList} from "../features/Todolists/TodolistList";
 import MenuIcon from "@material-ui/icons/Menu";
@@ -11,9 +10,6 @@ import {ErrorSnackBar} from "../components/ErrorSnackBar/ErrorSnackBar";
 
 export type FilterType = "all" | "active" | "completed";
 
-export type TasksStateType = {
-    [key: string]: Array<TaskType>;
-};
 
 export type TodolistType = {
     id: string;

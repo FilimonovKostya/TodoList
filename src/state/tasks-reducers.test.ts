@@ -2,13 +2,13 @@ import {
     addTaskAC,
     addTodolistAC,
     changeFilterTaskAC,
-    changeTaskStatusAC,
+    updateTaskAC,
     changeTaskTitleAC,
     removeTaskAC,
     tasksReducer
 } from "./tasks-reducers"
-import {TasksStateType} from "../components/trash/App";
 import {TaskPriorities, TaskStatus} from "../api/task-api";
+import {TasksStateType} from "../app/App";
 
 let startState: TasksStateType = {}
 
@@ -131,7 +131,7 @@ test('Task removed', () => {
 
 test('status of specified task should be changed', () => {
 
-    const action = changeTaskStatusAC('todolistId2', "2", TaskStatus.New);
+    const action = updateTaskAC('todolistId2', "2", TaskStatus.New);
 
     const endState = tasksReducer(startState, action)
 

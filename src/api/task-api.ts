@@ -1,34 +1,6 @@
 import Axios from "axios";
-import {ResponseType} from './todolist-api'
-
-
-export enum TaskStatus {
-    New = 0,
-    Inprogress = 1,
-    Completed = 2,
-    Draft = 3
-}
-
-export enum TaskPriorities {
-    Low = 0,
-    Middle = 1,
-    Hi = 2,
-    Urgently = 3,
-    Later = 4
-}
-
-export type TaskType = {
-    description: string
-    title: string
-    status: TaskStatus
-    priority: TaskPriorities
-    startDate: string
-    deadline: string
-    id: string
-    todoListId: string
-    order: number
-    addedDate: string
-}
+import {ResponseType, TaskType} from './todolist-api'
+import {UpdateDomainTaskModelType} from "../state/tasks-reducers";
 
 type ResponseTaskType = {
     items: Array<TaskType>
@@ -69,8 +41,9 @@ export const taskAPI = () => {
         deleteTask(todolistID: string, taskID: string) {
             return instance.delete(`${todolistID}/tasks/${taskID}`)
         },
-        updateTitleTask(todolistID: string, taskID: string, title: {}) {
-            return instance.put<UpdateTaskType>(`${todolistID}/tasks/${taskID}`, {title})
+        updateTask(todolistID: string, taskID: string, model: UpdateDomainTaskModelType) {
+            debugger
+            return instance.put<UpdateTaskType>(`${todolistID}/tasks/${taskID}`, model)
         }
     }
 }

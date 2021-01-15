@@ -1,7 +1,5 @@
 import React, {useEffect, useState} from "react";
-import Axios from "axios";
 import {taskAPI} from "./api/task-api";
-import {v1} from "uuid";
 
 export default {
     title: 'Task-API',
@@ -21,7 +19,7 @@ export const GetTask = () => {
             },)
     }, [])
 
-     return <div>{JSON.stringify(state)}</div>
+    return <div>{JSON.stringify(state)}</div>
 
 }
 
@@ -38,7 +36,7 @@ export const CreateTask = () => {
             })
     }, [])
 
-     return <div>{JSON.stringify(state)}</div>
+    return <div>{JSON.stringify(state)}</div>
 
 }
 
@@ -68,7 +66,7 @@ export const UpdateTitleTask = () => {
         const todoListID = '5734efd1-6495-4d71-bb4d-a75f9ed4de40'
         const newTitle = 'Change Title 2222222'
 
-        taskAPI().updateTitleTask(todoListID, taskID, newTitle)
+        taskAPI().updateTask(todoListID, taskID, {title: newTitle})
             .then(res => {
                 setState(res.data)
             })
