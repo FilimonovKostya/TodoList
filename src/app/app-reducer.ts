@@ -6,7 +6,7 @@ type InitialStateType = {
 }
 
 const initialState: InitialStateType = {
-    status: 'loading',
+    status: 'idle',
     error: null
 }
 

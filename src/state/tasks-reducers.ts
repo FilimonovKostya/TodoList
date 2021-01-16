@@ -91,7 +91,6 @@ export const createTaskTC = (title: string, todolistId: string) => (dispatch: Di
                 dispatch(setAppStatusAC('succeeded'))
             } else {
                 handleServerAppError(res.data, dispatch)
-
             }
         })
         .catch(error => {
