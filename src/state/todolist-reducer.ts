@@ -52,7 +52,7 @@ export const setTodoListsAC = (todoLists: TodoListType[]) => ({type: "SET-TODOLI
 export const changeTodolistEntityStatusAC = (entifyStatus: RequestStatusType, todoID: string) => ({
     type: 'CHANGE-TODOLIST-ENTIFY-STATUS',
     entifyStatus,
-     todoID
+    todoID
 } as const)
 
 //ThunkCreator
@@ -88,6 +88,10 @@ export const createTodoListTC = (title: string) => (dispatch: Dispatch<ActionTyp
                 }
                 dispatch(setAppStatusAC('failed'))
             }
+        })
+        .catch(error => {
+            dispatch(setAppErrorAC(error.message))
+            dispatch(setAppStatusAC('failed'))
         })
 }
 export const changeTitleTodoListTC = (todolistID: string, title: string) => (dispatch: Dispatch<ActionType>) => {

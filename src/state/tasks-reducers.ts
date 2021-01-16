@@ -10,13 +10,11 @@ export type TasksStateType = {
     [key: string]: Array<TaskType>;
 };
 
-
 type ActionsType =
     | ReturnType<typeof setTodoListsAC>
     | ReturnType<typeof addTaskAC>
     | ReturnType<typeof removeTaskAC>
     | ReturnType<typeof updateTaskAC>
-    // | ReturnType<typeof changeTaskTitleAC>
     | ReturnType<typeof addTodolistAC>
     | ReturnType<typeof removeTodolistAC>
     | ReturnType<typeof changeFilterTaskAC>
@@ -42,11 +40,6 @@ export const tasksReducer = (state: TasksStateType = initialState, action: Actio
             return {...state, [action.todoListID]: state[action.todoListID].filter(t => t.id !== action.id)}
         case "UPDATE-TASK":
             return {...state, [action.todolistId]: state[action.todolistId].map(t => t.id === action.id ? {...t, ...action.model} : t)}
-        // case "CHANGE-TITLE-TASK":
-        //     return {
-        //         ...state, [action.todolistID]: state[action.todolistID].map(t => t.id === action.id ? {...t, title: action.title} : t)
-        //
-        //     }
         case "ADD-TODOLIST":
             return {...state, [action.todoListID]: []}
         case "REMOVE-TODOLIST":
@@ -110,7 +103,6 @@ export const createTaskTC = (title: string, todolistId: string) => (dispatch: Di
         })
 }
 
-
 export type UpdateDomainTaskModelType = {
     title?: string
     description?: string
@@ -119,7 +111,6 @@ export type UpdateDomainTaskModelType = {
     startDate?: string
     deadline?: string
 }
-
 
 export const updateTaskTC = (taskId: string, todolistId: string, domainModule: UpdateDomainTaskModelType) => (dispatch: Dispatch, getState: () => AppRootStateType) => {
     debugger
@@ -142,12 +133,24 @@ export const updateTaskTC = (taskId: string, todolistId: string, domainModule: U
         debugger
         dispatch(setAppStatusAC('loading'))
         taskAPI().updateTask(todolistId, taskId, {...apiModel})
-            .then(() => {
-                debugger
-                dispatch(updateTaskAC(todolistId, taskId, {...apiModel}))
-                dispatch(setAppStatusAC('succeeded'))
+            .then((res) => {
+                if (res.data.resultCode === 0) {
+                    dispatch(updateTaskAC(todolistId, taskId, {...apiModel}))
+                    dispatch(setAppStatusAC('succeeded'))
+                } else {
+                    if (res.data.messages.length) {
+                        dispatch(setAppErrorAC(res.data.messages[0]))
+                    } else {
+                        dispatch(setAppErrorAC('Some error occurred'))
+                    }
+                    dispatch(setAppStatusAC('failed'))
+                }
             })
+            .catch(error => {
+                dispatch(setAppErrorAC(error.message))
+                dispatch(setAppStatusAC('failed'))
+            })
+
     }
 
 }
-

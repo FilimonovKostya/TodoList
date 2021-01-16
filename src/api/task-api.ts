@@ -31,11 +31,9 @@ const instance = Axios.create({
 export const taskAPI = () => {
     return {
         getTask(todoListID: string) {
-
             return instance.get<ResponseTaskType>(`${todoListID}/tasks`)
         },
         createTask(todolistID: string, title: string) {
-
             return instance.post<ResponseType<{ item: TaskType }>>(`${todolistID}/tasks`, {title})
         },
         deleteTask(todolistID: string, taskID: string) {
@@ -43,7 +41,7 @@ export const taskAPI = () => {
         },
         updateTask(todolistID: string, taskID: string, model: UpdateDomainTaskModelType) {
             debugger
-            return instance.put<UpdateTaskType>(`${todolistID}/tasks/${taskID}`, model)
+            return instance.put<ResponseType<{ item: UpdateTaskType }>>(`${todolistID}/tasks/${taskID}`, model)
         }
     }
 }
