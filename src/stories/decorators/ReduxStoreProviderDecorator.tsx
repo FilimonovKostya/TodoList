@@ -70,6 +70,9 @@ const initialGlobalState: AppRootStateType = {
     app: {
         status: "idle",
         error: ''
+    },
+    auth: {
+        isLoggedIn: false
     }
 };
 

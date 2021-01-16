@@ -17,15 +17,20 @@ import {Todolist} from "./Todolist/Todolist";
 import {FilterType} from "../../app/App";
 import {TaskStatuses} from "../../api/todolist-api";
 import {RequestStatusType} from "../../app/app-reducer";
+import {Redirect} from "react-router-dom";
 
 export const TodolistList = () => {
 
     const todoLists = useSelector<AppRootStateType, Array<TodoListDomainType>>(state => state.todolists)
     const tasks = useSelector<AppRootStateType, TasksStateType>(state => state.tasks)
     const status = useSelector<AppRootStateType, RequestStatusType>(state => state.app.status)
+    const isLoggedIn = useSelector<AppRootStateType, boolean>(state => state.auth.isLoggedIn)
     const dispatch = useDispatch()
 
     useEffect(() => {
+        if (!isLoggedIn) {
+            return
+        }
         dispatch(setTodoListsTC())
     }, [dispatch])
 
@@ -46,7 +51,7 @@ export const TodolistList = () => {
         dispatch(changeFilterTodoListAC(value, todolistID))
     }, [dispatch])
 
-    const changeTaskTitle = useCallback((id: string, todolistID:string , title: string) => {
+    const changeTaskTitle = useCallback((id: string, todolistID: string, title: string) => {
         debugger
         dispatch(updateTaskTC(id, todolistID, {title}))
     }, [dispatch])
@@ -63,9 +68,13 @@ export const TodolistList = () => {
         dispatch(createTodoListTC(title))
     }, [dispatch])
 
+    if(!isLoggedIn){
+        return <Redirect to={'/login'}/>
+    }
+
     return <>
         <Grid style={{padding: '15px'}}>
-            <AddItemForm addItem={addTodoList} disabled={status === 'loading'} />
+            <AddItemForm addItem={addTodoList} disabled={status === 'loading'}/>
         </Grid>
         <Grid container={true} spacing={5}>
             {
