@@ -5,6 +5,7 @@ import {Dispatch} from "redux";
 import {AppRootStateType} from "./store";
 import {setAppErrorAC, setAppStatusAC} from "../app/app-reducer";
 import {TaskPriorities, TaskStatuses, TaskType} from "../api/todolist-api";
+import {handleServerAppError, handleServerNetworkError} from "../utils/error-utils";
 
 export type TasksStateType = {
     [key: string]: Array<TaskType>;
@@ -89,17 +90,13 @@ export const createTaskTC = (title: string, todolistId: string) => (dispatch: Di
                 dispatch(addTaskAC(task))
                 dispatch(setAppStatusAC('succeeded'))
             } else {
-                if (res.data.messages.length) {
-                    dispatch(setAppErrorAC(res.data.messages[0]))
-                } else {
-                    dispatch(setAppErrorAC('Some error occurred'))
-                }
-                dispatch(setAppStatusAC('failed'))
+                handleServerAppError(res.data, dispatch)
+
             }
         })
         .catch(error => {
-            dispatch(setAppErrorAC(error.message))
-            dispatch(setAppStatusAC('failed'))
+            handleServerNetworkError(error.message, dispatch)
+
         })
 }
 
@@ -113,7 +110,7 @@ export type UpdateDomainTaskModelType = {
 }
 
 export const updateTaskTC = (taskId: string, todolistId: string, domainModule: UpdateDomainTaskModelType) => (dispatch: Dispatch, getState: () => AppRootStateType) => {
-    debugger
+
     const state = getState()
     const task = state.tasks[todolistId].find(t => t.id === taskId)
     if (!task) {
@@ -130,7 +127,6 @@ export const updateTaskTC = (taskId: string, todolistId: string, domainModule: U
     }
 
     if (task) {
-        debugger
         dispatch(setAppStatusAC('loading'))
         taskAPI().updateTask(todolistId, taskId, {...apiModel})
             .then((res) => {
@@ -147,10 +143,8 @@ export const updateTaskTC = (taskId: string, todolistId: string, domainModule: U
                 }
             })
             .catch(error => {
-                dispatch(setAppErrorAC(error.message))
-                dispatch(setAppStatusAC('failed'))
+                handleServerNetworkError(error.message, dispatch)
             })
-
     }
 
 }
