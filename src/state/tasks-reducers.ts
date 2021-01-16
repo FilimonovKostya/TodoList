@@ -95,7 +95,6 @@ export const createTaskTC = (title: string, todolistId: string) => (dispatch: Di
         })
         .catch(error => {
             handleServerNetworkError(error.message, dispatch)
-
         })
 }
 

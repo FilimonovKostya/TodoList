@@ -28,6 +28,12 @@ export const todolistAPI = () => {
 export const authAPI = {
     login(loginData: LoginParamsType) {
         return instance.post<ResponseType<{ userId: number }>>(`auth/login`, {...loginData})
+    },
+    me(){
+        return instance.get<ResponseType<AuthType>>(`auth/me`)
+    },
+    logout(){
+        return instance.delete<ResponseType>(`auth/login`)
     }
 }
 
@@ -48,6 +54,12 @@ export type ResponseType<D = {}> = {
     resultCode: number
     messages: string[]
     data: D
+}
+
+type AuthType = {
+    id:number
+    email:string
+    login:string
 }
 
 export enum TaskStatuses {
