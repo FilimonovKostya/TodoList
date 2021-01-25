@@ -12,7 +12,7 @@ type InitialStateType = {
 }
 
 const initialState: InitialStateType = {
-    status: 'idle',
+    status: 'succeeded',
     error: null,
     isInitialized: false
 }

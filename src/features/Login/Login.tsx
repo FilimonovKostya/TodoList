@@ -47,6 +47,8 @@ export const Login = () => {
 
     return <Grid container justify="center">
         <Grid item xs={4}>
+            <form onSubmit={formik.handleSubmit}>
+
             <FormControl>
                 <FormLabel>
                     <p>To log in get registered
@@ -59,7 +61,6 @@ export const Login = () => {
                     <p>Password: free</p>
                 </FormLabel>
                 <FormGroup>
-                    <form onSubmit={formik.handleSubmit}>
                         <TextField
                             label="Email"
                             margin="normal"
@@ -85,9 +86,10 @@ export const Login = () => {
                         />
 
                         <Button type={'submit'} variant={'contained'} color={'primary'}>Login</Button>
-                    </form>
+
                 </FormGroup>
             </FormControl>
+        </form>
         </Grid>
     </Grid>
 }

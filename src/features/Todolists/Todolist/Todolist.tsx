@@ -25,19 +25,20 @@ type PropsType = {
     removeTodoList: (id: string) => void
     changeTaskTitle: (id: string, newTitle: string, todoListID: string) => void
     changeTodoListTitle: (todoId: string, newTile: string) => void
+    demo?:boolean
 }
 
 export const Todolist = React.memo((props: PropsType) => {
+
+    useEffect(() => {
+        dispatch(setTaskTC(props.todoID))
+    }, [])
 
     const addTask = useCallback((title: string) => {
         dispatch(createTaskTC(props.todoID, title))
     }, [])
 
     const dispatch = useDispatch()
-
-    useEffect(() => {
-        dispatch(setTaskTC(props.todoID))
-    }, [])
 
     const changeTodoListTitle = useCallback((newTitle: string) => {
         props.changeTodoListTitle(props.todoID, newTitle)

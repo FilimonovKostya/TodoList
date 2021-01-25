@@ -19,8 +19,12 @@ import {TaskStatuses} from "../../api/todolist-api";
 import {RequestStatusType} from "../../app/app-reducer";
 import {Redirect} from "react-router-dom";
 
-export const TodolistList = () => {
+type PropsType = {
+    demo?: boolean
+}
 
+export const TodolistList = ({demo = false}: PropsType) => {
+   debugger
     const todoLists = useSelector<AppRootStateType, Array<TodoListDomainType>>(state => state.todolists)
     const tasks = useSelector<AppRootStateType, TasksStateType>(state => state.tasks)
     const status = useSelector<AppRootStateType, RequestStatusType>(state => state.app.status)
@@ -28,7 +32,7 @@ export const TodolistList = () => {
     const dispatch = useDispatch()
 
     useEffect(() => {
-        if (!isLoggedIn) {
+        if (demo || !isLoggedIn) {
             return
         }
         dispatch(setTodoListsTC())
@@ -68,7 +72,7 @@ export const TodolistList = () => {
         dispatch(createTodoListTC(title))
     }, [dispatch])
 
-    if(!isLoggedIn){
+    if (!isLoggedIn) {
         return <Redirect to={'/login'}/>
     }
 
@@ -95,7 +99,9 @@ export const TodolistList = () => {
                                           filter={tl.filter}
                                           removeTodoList={removeTodoList}
                                           changeTaskTitle={changeTaskTitle}
-                                          changeTodoListTitle={changeTodoListTitle}/>
+                                          changeTodoListTitle={changeTodoListTitle}
+                                          demo={demo}
+                                />
                             </Paper>
                         </Grid>
                     )
