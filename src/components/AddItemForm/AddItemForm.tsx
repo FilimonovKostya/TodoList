@@ -15,7 +15,6 @@ export const AddItemForm = React.memo((props: AddItemFormPropsType) => {
     const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => setTitle(e.currentTarget.value)
 
     const addTask = () => {
-
         if (title.trim()) {
             props.addItem(title.trim())
             setTitle('')
@@ -28,7 +27,6 @@ export const AddItemForm = React.memo((props: AddItemFormPropsType) => {
 
     const onKeyPressHandler = (e: KeyboardEvent<HTMLInputElement>) => {
         setError(null)
-
         if (e.key === 'Enter') {
             addTask()
         }

@@ -5,7 +5,7 @@ import {EditableSpan} from "../../../components/EditableSpan/EditableSpan";
 import {Button, IconButton} from "@material-ui/core";
 import DeleteIcon from '@material-ui/icons/Delete';
 import {Task} from "./Task/Task";
-import {FilterType} from '../../../state/todolist-reducer';
+import {createTodoListTC, FilterType} from '../../../state/todolist-reducer';
 import {useDispatch} from "react-redux";
 import {createTaskTC, setTaskTC} from "../../../state/tasks-reducers";
 import {RequestStatusType} from "../../../app/app-reducer";
@@ -29,16 +29,17 @@ type PropsType = {
 }
 
 export const Todolist = React.memo((props: PropsType) => {
+debugger
+    const dispatch = useDispatch()
 
     useEffect(() => {
         dispatch(setTaskTC(props.todoID))
-    }, [])
+    }, [props.todoID])
 
     const addTask = useCallback((title: string) => {
-        dispatch(createTaskTC(props.todoID, title))
-    }, [])
+      dispatch(createTaskTC(title, props.todoID))
+    }, [ props.todoID])
 
-    const dispatch = useDispatch()
 
     const changeTodoListTitle = useCallback((newTitle: string) => {
         props.changeTodoListTitle(props.todoID, newTitle)
@@ -69,6 +70,7 @@ export const Todolist = React.memo((props: PropsType) => {
         </div>
         <ul>
             {
+
                 tasksForTodolist.map(f => <Task task={f}
                                                 changeCheckbox={props.changeStatus}
                                                 changeTaskTitle={props.changeTaskTitle}

@@ -24,7 +24,7 @@ type PropsType = {
 }
 
 export const TodolistList = ({demo = false}: PropsType) => {
-   debugger
+
     const todoLists = useSelector<AppRootStateType, Array<TodoListDomainType>>(state => state.todolists)
     const tasks = useSelector<AppRootStateType, TasksStateType>(state => state.tasks)
     const status = useSelector<AppRootStateType, RequestStatusType>(state => state.app.status)
@@ -44,7 +44,7 @@ export const TodolistList = ({demo = false}: PropsType) => {
     }, [dispatch])
 
     const addTask = useCallback((todoListID: string, title: string) => {
-        dispatch(createTaskTC(todoListID, title))
+        dispatch(createTaskTC(title, todoListID))
     }, [dispatch])
 
     const changeStatus = useCallback((id: string, todoListID: string, status: TaskStatuses) => {
@@ -56,7 +56,7 @@ export const TodolistList = ({demo = false}: PropsType) => {
     }, [dispatch])
 
     const changeTaskTitle = useCallback((id: string, todolistID: string, title: string) => {
-        debugger
+
         dispatch(updateTaskTC(id, todolistID, {title}))
     }, [dispatch])
 

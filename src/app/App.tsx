@@ -39,11 +39,9 @@ function App({demo = false}:PropsType) {
 
     const onClickHandler = () => dispatch(logoutTC())
 
-    if (!isInitialized) {
-        return <div style={{position: 'fixed', top: '30%', textAlign: 'center', width: '100%'}}>
-            <CircularProgress/>
-        </div>
-    }
+    // if (!isInitialized) {
+    //     return <Login/>
+    // }
 
     return (
         <div className="App">
