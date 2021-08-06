@@ -1,10 +1,9 @@
-import React, {ChangeEvent, useState, KeyboardEvent} from 'react';
+import React, {ChangeEvent, KeyboardEvent, useState} from "react";
 
- type AddItemFormPropsType = {
-     addItem: (title: string) => void
- }
-
-export const AddItemForm = (props:AddItemFormPropsType) => {
+type AddItemFormPropsType = {
+    addItem: (title: string) => void
+}
+export const TodolistForm = (props: AddItemFormPropsType) => {
 
     let [title, setTitle] = useState('')
     let [error, setError] = useState<string | null>(null)

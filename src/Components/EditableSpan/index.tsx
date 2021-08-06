@@ -23,5 +23,3 @@ export function EditableSpan(props: EditableSpanPropsType) {
         ? <input value={title} onChange={onChangeTitleHandler} onBlur={activateViewMode} autoFocus/>
         : <span onClick={activateEditMode}> {props.title} </span>
 }
-
-console.log( 'testt')
