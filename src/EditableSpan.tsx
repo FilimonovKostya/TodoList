@@ -24,4 +24,4 @@ export function EditableSpan(props: EditableSpanPropsType) {
         : <span onClick={activateEditMode}> {props.title} </span>
 }
 
-console.log( 'test')
+console.log( 'testt')
