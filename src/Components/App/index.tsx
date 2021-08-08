@@ -1,19 +1,24 @@
 import React, {useState} from 'react';
-import './App.css';
+import '../../App.css';
 
 import {v1} from 'uuid';
-import {TaskType, Todolist} from "./Components/Todolist";
-import {TodolistForm} from "./Components/TodolistForm";
+import {TaskType, Todolist} from "../Todolist";
+import {TodolistForm} from "../TodolistForm";
+import {TodolistsStateToProps} from "./index.store";
 
 export type FilterType = 'all' | 'active' | 'completed'
 type TasksStateType = {
     [key: string]: Array<TaskType>
 }
 
-function App() {
+type Props = TodolistsStateToProps
+
+function App({todolists}: Props) {
 
     let todoListId1 = v1()
     let todoListId2 = v1()
+
+    console.log('todolists', todolists)
 
     type TodolistType = {
         id: string

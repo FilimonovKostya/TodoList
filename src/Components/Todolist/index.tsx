@@ -1,5 +1,5 @@
 import React, {ChangeEvent, FC} from "react";
-import {FilterType} from "../../App";
+import {FilterType} from "../App";
 import {TodolistForm} from "../TodolistForm";
 import {EditableSpan} from "../EditableSpan";
 
