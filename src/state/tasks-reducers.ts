@@ -1,4 +1,3 @@
-import {v1} from "uuid";
 import {taskAPI} from "../api/task-api";
 import {addTodoListAC, FilterType, setTodoListsAC} from "./todolist-reducer";
 import {Dispatch} from "redux";
@@ -20,13 +19,13 @@ type ActionsType =
     | ReturnType<typeof removeTodolistAC>
     | ReturnType<typeof changeFilterTaskAC>
     | ReturnType<typeof setTaskAC>
-    | ReturnType<typeof setAppStatusAC>
-    | ReturnType<typeof setAppErrorAC>
 
+type ToolkitActionType = ReturnType<typeof setAppStatusAC>
+    | ReturnType<typeof setAppErrorAC>
 
 const initialState: TasksStateType = {}
 
-export const tasksReducer = (state: TasksStateType = initialState, action: ActionsType): TasksStateType => {
+export const tasksReducer = (state: TasksStateType = initialState, action: ActionsType & ToolkitActionType): TasksStateType => {
     switch (action.type) {
         case "SET-TASK":
             return {...state, [action.todoListID]: action.tasks}
@@ -40,7 +39,10 @@ export const tasksReducer = (state: TasksStateType = initialState, action: Actio
         case "REMOVE-TASK":
             return {...state, [action.todoListID]: state[action.todoListID].filter(t => t.id !== action.id)}
         case "UPDATE-TASK":
-            return {...state, [action.todolistId]: state[action.todolistId].map(t => t.id === action.id ? {...t, ...action.model} : t)}
+            return {
+                ...state,
+                [action.todolistId]: state[action.todolistId].map(t => t.id === action.id ? {...t, ...action.model} : t)
+            }
         case "ADD-TODOLIST":
             return {...state, [action.todoList.id]: []}
         case "REMOVE-TODOLIST":
@@ -52,43 +54,66 @@ export const tasksReducer = (state: TasksStateType = initialState, action: Actio
 }
 
 export const addTaskAC = (task: TaskType) => ({type: 'ADD-TASK', task} as const)
-export const removeTaskAC = (id: string, todoListId: string) => ({type: "REMOVE-TASK", id: id, todoListID: todoListId} as const)
-export const updateTaskAC = (todolistId: string, id: string, model: UpdateDomainTaskModelType) => ({type: "UPDATE-TASK", todolistId, id, model} as const)
-export const changeTaskTitleAC = (todolistID: string, id: string, title: string) => ({type: "CHANGE-TITLE-TASK", todolistID, id, title} as const)
+export const removeTaskAC = (id: string, todoListId: string) => ({
+    type: "REMOVE-TASK",
+    id: id,
+    todoListID: todoListId
+} as const)
+export const updateTaskAC = (todolistId: string, id: string, model: UpdateDomainTaskModelType) => ({
+    type: "UPDATE-TASK",
+    todolistId,
+    id,
+    model
+} as const)
+export const changeTaskTitleAC = (todolistID: string, id: string, title: string) => ({
+    type: "CHANGE-TITLE-TASK",
+    todolistID,
+    id,
+    title
+} as const)
 // export const addTodolistAC = (title: string) => ({type: "ADD-TODOLIST", title, todoListID: v1()} as const)
 export const removeTodolistAC = (id: string) => ({type: 'REMOVE-TODOLIST', id} as const)
-export const changeFilterTaskAC = (id: string, todolistID: string, newFilter: FilterType) => ({type: "CHANGE-FILTER-TASK", todolistID, id, newFilter} as const)
-export const setTaskAC = (todoListID: string, tasks: Array<TaskType>) => ({type: "SET-TASK", todoListID, tasks} as const)
+export const changeFilterTaskAC = (id: string, todolistID: string, newFilter: FilterType) => ({
+    type: "CHANGE-FILTER-TASK",
+    todolistID,
+    id,
+    newFilter
+} as const)
+export const setTaskAC = (todoListID: string, tasks: Array<TaskType>) => ({
+    type: "SET-TASK",
+    todoListID,
+    tasks
+} as const)
 
 
 //THUNK CREATOR
-export const setTaskTC = (todoListID: string) => (dispatch: Dispatch<ActionsType>) => {
-    dispatch(setAppStatusAC('loading'))
+export const setTaskTC = (todoListID: string) => (dispatch: Dispatch) => {
+    dispatch(setAppStatusAC({status: 'loading'}))
     taskAPI().getTask(todoListID)
         .then(res => {
             const tasks = res.data.items
             dispatch(setTaskAC(todoListID, tasks))
-            dispatch(setAppStatusAC('succeeded'))
+            dispatch(setAppStatusAC({status: 'succeeded'}))
         })
 
 }
-export const removeTaskTC = (todoListID: string, taskID: string) => (dispatch: Dispatch<ActionsType>) => {
-    dispatch(setAppStatusAC('loading'))
+export const removeTaskTC = (todoListID: string, taskID: string) => (dispatch: Dispatch) => {
+    dispatch(setAppStatusAC({status: 'loading'}))
     taskAPI().deleteTask(todoListID, taskID)
         .then(() => {
             dispatch(removeTaskAC(taskID, todoListID))
-            dispatch(setAppStatusAC('succeeded'))
+            dispatch(setAppStatusAC({status: 'succeeded'}))
         })
 
 }
-export const createTaskTC = (title: string, todolistId: string) => (dispatch: Dispatch<ActionsType>) => {
-    dispatch(setAppStatusAC('loading'))
+export const createTaskTC = (title: string, todolistId: string) => (dispatch: Dispatch) => {
+    dispatch(setAppStatusAC({status: 'loading'}))
     taskAPI().createTask(todolistId, title)
         .then(res => {
             if (res.data.resultCode === 0) {
                 const task = res.data.data.item
                 dispatch(addTaskAC(task))
-                dispatch(setAppStatusAC('succeeded'))
+                dispatch(setAppStatusAC({status: 'succeeded'}))
             } else {
                 handleServerAppError(res.data, dispatch)
             }
@@ -125,19 +150,19 @@ export const updateTaskTC = (taskId: string, todolistId: string, domainModule: U
     }
 
     if (task) {
-        dispatch(setAppStatusAC('loading'))
+        dispatch(setAppStatusAC({status: 'loading'}))
         taskAPI().updateTask(todolistId, taskId, {...apiModel})
             .then((res) => {
                 if (res.data.resultCode === 0) {
                     dispatch(updateTaskAC(todolistId, taskId, {...apiModel}))
-                    dispatch(setAppStatusAC('succeeded'))
+                    dispatch(setAppStatusAC({status: 'succeeded'}))
                 } else {
                     if (res.data.messages.length) {
-                        dispatch(setAppErrorAC(res.data.messages[0]))
+                        dispatch(setAppErrorAC({error: res.data.messages[0]}))
                     } else {
-                        dispatch(setAppErrorAC('Some error occurred'))
+                        dispatch(setAppErrorAC({error: 'Some error occurred'}))
                     }
-                    dispatch(setAppStatusAC('failed'))
+                    dispatch(setAppStatusAC({status: 'failed'}))
                 }
             })
             .catch(error => {

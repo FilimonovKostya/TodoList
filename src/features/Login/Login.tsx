@@ -64,7 +64,7 @@ export const Login = () => {
                         <TextField
                             label="Email"
                             margin="normal"
-                            name={'email'}
+                            // name='email'
                             {...formik.getFieldProps('email')}
                         />
                         {formik.touched.email && formik.errors.email ? (
@@ -74,7 +74,7 @@ export const Login = () => {
                             type="password"
                             label="Password"
                             margin="normal"
-                            name={'password'}
+                            // name={'password'}
                             {...formik.getFieldProps('password')}
                         />
                         {formik.touched.password && formik.errors.password ? (
@@ -82,7 +82,7 @@ export const Login = () => {
                         ) : null}
                         <FormControlLabel
                             label={'Remember me'}
-                            control={<Checkbox name={'rememberMe'} onBlur={formik.handleBlur} {...formik.getFieldProps('rememberMe')} />}
+                            control={<Checkbox  {...formik.getFieldProps('rememberMe')} />}
                         />
 
                         <Button type={'submit'} variant={'contained'} color={'primary'}>Login</Button>

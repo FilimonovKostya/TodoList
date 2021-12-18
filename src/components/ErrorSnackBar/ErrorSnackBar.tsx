@@ -20,7 +20,7 @@ export function ErrorSnackBar() {
             return
         }
         setOpen(false)
-        dispatch(setAppErrorAC(null))
+        dispatch(setAppErrorAC({error: null}))
     }
 
     return (
