@@ -1,4 +1,3 @@
-import {v1} from "uuid";
 import {todolistAPI, TodoListType} from "../api/todolist-api";
 import {Dispatch} from "redux";
 import {RequestStatusType, setAppErrorAC, setAppStatusAC} from "../app/app-reducer";
@@ -30,7 +29,7 @@ export const todoListReducer = (state: Array<TodoListDomainType> = initialState,
         case "REMOVE-TODOLIST":
             return state.filter(f => f.id !== action.todolistID)
         case "ADD-TODOLIST" :
-            return [{ ...action.todoList, filter: 'all', entityStatus: 'idle' }, ...state]
+            return [{...action.todoList, filter: 'all', entityStatus: 'idle'}, ...state]
         case 'CHANGING-TITLE-TODOLIST' :
             return state.map(tl => tl.id === action.id ? {...tl, title: action.title} : tl)
         case 'CHANGED-FILTER-TODOLIST':
@@ -45,8 +44,16 @@ export const todoListReducer = (state: Array<TodoListDomainType> = initialState,
 //Actions
 export const removeTodoListAC = (todolistID: string) => ({type: "REMOVE-TODOLIST", todolistID} as const)
 export const addTodoListAC = (todoList: TodoListType) => ({type: "ADD-TODOLIST", todoList} as const)
-export const changeTitleTodoListAC = (title: string, id: string) => ({type: "CHANGING-TITLE-TODOLIST", title, id} as const)
-export const changeFilterTodoListAC = (filter: FilterType, id: string) => ({type: "CHANGED-FILTER-TODOLIST", filter, id} as const)
+export const changeTitleTodoListAC = (title: string, id: string) => ({
+    type: "CHANGING-TITLE-TODOLIST",
+    title,
+    id
+} as const)
+export const changeFilterTodoListAC = (filter: FilterType, id: string) => ({
+    type: "CHANGED-FILTER-TODOLIST",
+    filter,
+    id
+} as const)
 export const setTodoListsAC = (todoLists: TodoListType[]) => ({type: "SET-TODOLISTS", todoLists} as const)
 export const changeTodolistEntityStatusAC = (entifyStatus: RequestStatusType, todoID: string) => ({
     type: 'CHANGE-TODOLIST-ENTIFY-STATUS',
@@ -77,7 +84,7 @@ export const createTodoListTC = (title: string) => (dispatch: Dispatch<ActionTyp
     todolistAPI().createTodoList(title)
         .then((res) => {
             if (res.data.resultCode === 0) {
-                debugger
+
                 dispatch(addTodoListAC(res.data.data.item))
                 dispatch(setAppStatusAC('succeeded'))
             } else {

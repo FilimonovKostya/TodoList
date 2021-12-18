@@ -14,7 +14,7 @@ export const GetTask = () => {
 
         taskAPI().getTask(todoListID)
             .then(res => {
-                debugger
+
                 setState(res.data.items)
             },)
     }, [])

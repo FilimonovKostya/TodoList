@@ -5,7 +5,7 @@ import {EditableSpan} from "../../../components/EditableSpan/EditableSpan";
 import {Button, IconButton} from "@material-ui/core";
 import DeleteIcon from '@material-ui/icons/Delete';
 import {Task} from "./Task/Task";
-import {createTodoListTC, FilterType} from '../../../state/todolist-reducer';
+import {FilterType} from '../../../state/todolist-reducer';
 import {useDispatch} from "react-redux";
 import {createTaskTC, setTaskTC} from "../../../state/tasks-reducers";
 import {RequestStatusType} from "../../../app/app-reducer";
@@ -13,7 +13,7 @@ import {TaskStatuses, TaskType} from "../../../api/todolist-api";
 
 
 type PropsType = {
-    entifyStatus:RequestStatusType
+    entifyStatus: RequestStatusType
     title: string
     tasks: Array<TaskType>
     removeTask: (id: string, todoListID: string) => void
@@ -25,11 +25,11 @@ type PropsType = {
     removeTodoList: (id: string) => void
     changeTaskTitle: (id: string, newTitle: string, todoListID: string) => void
     changeTodoListTitle: (todoId: string, newTile: string) => void
-    demo?:boolean
+    demo?: boolean
 }
 
 export const Todolist = React.memo((props: PropsType) => {
-debugger
+
     const dispatch = useDispatch()
 
     useEffect(() => {
@@ -37,8 +37,8 @@ debugger
     }, [props.todoID])
 
     const addTask = useCallback((title: string) => {
-      dispatch(createTaskTC(title, props.todoID))
-    }, [ props.todoID])
+        dispatch(createTaskTC(title, props.todoID))
+    }, [props.todoID])
 
 
     const changeTodoListTitle = useCallback((newTitle: string) => {
