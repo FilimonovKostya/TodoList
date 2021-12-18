@@ -4,6 +4,7 @@ import {todoListReducer} from "./todolist-reducer";
 import thunk from "redux-thunk";
 import {appReducer} from "../app/app-reducer";
 import {authReducer} from "../features/Login/authReducer";
+import {configureStore} from "@reduxjs/toolkit";
 
 // объединяя reducer-ы с помощью combineReducers,
 
@@ -12,11 +13,18 @@ import {authReducer} from "../features/Login/authReducer";
 const rootReducer = combineReducers({
     tasks: tasksReducer,
     todolists: todoListReducer,
-    app:appReducer,
-    auth:authReducer
+    app: appReducer,
+    auth: authReducer
 })
 // непосредственно создаём store
-export const store = createStore(rootReducer, applyMiddleware(thunk));
+// export const store = createStore(rootReducer, applyMiddleware(thunk));
+
+//Redux Toolkit
+export const store = configureStore({
+    reducer: rootReducer,
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware().prepend(thunk)
+})
+
 // определить автоматически тип всего объекта состояния
 export type AppRootStateType = ReturnType<typeof rootReducer>
 
