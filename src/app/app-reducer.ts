@@ -8,7 +8,7 @@ export type RequestStatusType = 'idle' | 'loading' | 'succeeded' | 'failed'
 type InitialStateType = {
     status: RequestStatusType
     error: string | null
-    isInitialized:boolean
+    isInitialized: boolean
 }
 
 const initialState: InitialStateType = {
@@ -24,7 +24,7 @@ export const appReducer = (state: InitialStateType = initialState, action: Actio
         case "APP/SET-ERROR":
             return {...state, error: action.error}
         case "APP/SET-INITIALIZE":
-            return {...state, isInitialized:action.isInitialized}
+            return {...state, isInitialized: action.isInitialized}
         default:
             return state
     }
@@ -32,14 +32,14 @@ export const appReducer = (state: InitialStateType = initialState, action: Actio
 
 export const setAppStatusAC = (status: RequestStatusType) => ({type: 'APP/SET-STATUS', status} as const)
 export const setAppErrorAC = (error: string | null) => ({type: 'APP/SET-ERROR', error} as const)
-export const setAppInitializeAC = (isInitialized:boolean) => ({type: 'APP/SET-INITIALIZE', isInitialized} as const)
+export const setAppInitializeAC = (isInitialized: boolean) => ({type: 'APP/SET-INITIALIZE', isInitialized} as const)
 
 export const initializeAppTC = () => (dispatch: Dispatch) => {
     authAPI.me()
         .then(res => {
             dispatch(setAppStatusAC('loading'))
             if (res.data.resultCode === 0) {
-                dispatch(setIsLoggedInAC(true));
+                dispatch(setIsLoggedInAC({value: true}));
                 dispatch(setAppInitializeAC(true));
                 dispatch(setAppStatusAC('succeeded'))
             } else {
@@ -52,4 +52,7 @@ export const initializeAppTC = () => (dispatch: Dispatch) => {
 }
 
 
-type ActionsType = ReturnType<typeof setAppStatusAC> | ReturnType<typeof setAppErrorAC> | ReturnType<typeof setAppInitializeAC>
+type ActionsType =
+    ReturnType<typeof setAppStatusAC>
+    | ReturnType<typeof setAppErrorAC>
+    | ReturnType<typeof setAppInitializeAC>
