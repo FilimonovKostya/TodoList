@@ -18,10 +18,10 @@ const slice = createSlice({
     initialState,
     reducers: {
         setTodoListsAC: (state, action: PayloadAction<{ todoLists: TodoListType[] }>) => {
-          return   action.payload.todoLists.map(el => ({...el, filter: 'all', entityStatus: 'idle'}))
+            return action.payload.todoLists.map(el => ({...el, filter: 'all', entityStatus: 'idle'}))
         },
         addTodoListAC: (state, action: PayloadAction<{ todoList: TodoListType }>) => {
-            state.push({...action.payload.todoList, filter: 'all', entityStatus: 'idle'})
+            state.unshift({...action.payload.todoList, filter: 'all', entityStatus: 'idle'})
         },
         removeTodoListAC: (state, action: PayloadAction<{ todolistID: string }>) => {
             const index = state.findIndex(tl => tl.id === action.payload.todolistID)
