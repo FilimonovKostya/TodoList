@@ -41,7 +41,7 @@ const slice = createSlice({
     extraReducers: builder => {
         builder
             .addCase(setTodoListsAC, ((state, action) => {
-                action.payload.todoLists.forEach((tl: any) => state[tl.id] = [])
+                action.payload.todoLists.forEach(tl => state[tl.id] = [])
             }))
             .addCase(addTodoListAC, (state, action) => {
                 state[action.payload.todoList.id] = []
