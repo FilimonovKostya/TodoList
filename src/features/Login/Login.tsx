@@ -13,7 +13,7 @@ type FormikErrorType = {
 }
 
 export const Login = () => {
-    const isLoggedIn = useSelector<AppRootStateType,boolean>(state => state.auth.isLoggedIn)
+    const isLoggedIn = useSelector<AppRootStateType, boolean>(state => state.auth.isLoggedIn)
     const dispatch = useDispatch()
     const formik = useFormik({
         initialValues: {
@@ -36,12 +36,12 @@ export const Login = () => {
             return errors;
         },
         onSubmit: values => {
-            dispatch(loginTC({...values}))
+            dispatch(loginTC({data: values}))
             formik.resetForm()
         },
     })
 
-    if(isLoggedIn){
+    if (isLoggedIn) {
         return <Redirect to={'/'}/>
     }
 
@@ -49,18 +49,18 @@ export const Login = () => {
         <Grid item xs={4}>
             <form onSubmit={formik.handleSubmit}>
 
-            <FormControl>
-                <FormLabel>
-                    <p>To log in get registered
-                        <a href={'https://social-network.samuraijs.com/'}
-                           target={'_blank'}>here
-                        </a>
-                    </p>
-                    <p>or use common test account credentials:</p>
-                    <p>Email: free@samuraijs.com</p>
-                    <p>Password: free</p>
-                </FormLabel>
-                <FormGroup>
+                <FormControl>
+                    <FormLabel>
+                        <p>To log in get registered
+                            <a href={'https://social-network.samuraijs.com/'}
+                               target={'_blank'}>here
+                            </a>
+                        </p>
+                        <p>or use common test account credentials:</p>
+                        <p>Email: free@samuraijs.com</p>
+                        <p>Password: free</p>
+                    </FormLabel>
+                    <FormGroup>
                         <TextField
                             label="Email"
                             margin="normal"
@@ -87,9 +87,9 @@ export const Login = () => {
 
                         <Button type={'submit'} variant={'contained'} color={'primary'}>Login</Button>
 
-                </FormGroup>
-            </FormControl>
-        </form>
+                    </FormGroup>
+                </FormControl>
+            </form>
         </Grid>
     </Grid>
 }
