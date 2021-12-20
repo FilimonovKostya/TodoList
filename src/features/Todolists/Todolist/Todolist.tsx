@@ -7,7 +7,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import {Task} from "./Task/Task";
 import {FilterType} from '../../../state/todolist-reducer';
 import {useDispatch} from "react-redux";
-import {createTaskTC, setTaskTC} from "../../../state/tasks-reducers";
+import {createTaskTC, fetchTasks} from "../../../state/tasks-reducers";
 import {RequestStatusType} from "../../../app/app-reducer";
 import {TaskStatuses, TaskType} from "../../../api/todolist-api";
 
@@ -33,7 +33,7 @@ export const Todolist = React.memo((props: PropsType) => {
     const dispatch = useDispatch()
 
     useEffect(() => {
-        dispatch(setTaskTC(props.todoID))
+        dispatch(fetchTasks(props.todoID))
     }, [props.todoID])
 
     const addTask = useCallback((title: string) => {
