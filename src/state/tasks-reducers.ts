@@ -19,41 +19,35 @@ const slice = createSlice({
     initialState,
     reducers: {
         setTaskAC: (state, action: PayloadAction<{ todoListID: string, tasks: Array<TaskType> }>) => {
-            return {...state, [action.payload.todoListID]: action.payload.tasks}
+            state[action.payload.todoListID] = action.payload.tasks
         },
         addTaskAC: (state, action: PayloadAction<{ task: TaskType }>) => {
-            return {
-                ...state,
-                [action.payload.task.todoListId]: [action.payload.task, ...state[action.payload.task.todoListId]]
-            }
+            const tasks = state[action.payload.task.todoListId]
+            tasks.unshift(action.payload.task)
+
         },
         removeTaskAC: (state, action: PayloadAction<{ id: string, todoListId: string }>) => {
-            return {
-                ...state,
-                [action.payload.todoListId]: state[action.payload.todoListId].filter(t => t.id !== action.payload.id)
-            }
+            const tasks = state[action.payload.todoListId]
+            const index = tasks.findIndex(el => el.id === action.payload.id)
+            tasks.splice(index, 1)
+
         },
         updateTaskAC: (state, action: PayloadAction<{ todolistId: string, id: string, model: UpdateDomainTaskModelType }>) => {
-            return {
-                ...state,
-                [action.payload.todolistId]: state[action.payload.todolistId].map(t => t.id === action.payload.id ? {...t, ...action.payload.model} : t)
-            }
+            const tasks = state[action.payload.todolistId]
+            const index = tasks.findIndex(el => el.id === action.payload.id)
+            tasks[index] = {...tasks[index], ...action.payload.model}
         },
     },
     extraReducers: builder => {
         builder
             .addCase(setTodoListsAC, ((state, action) => {
-                const copyState = {...state}
-                action.payload.todoLists.forEach((tl: any) => copyState[tl.id] = [])
-                return copyState
+                action.payload.todoLists.forEach((tl: any) => state[tl.id] = [])
             }))
             .addCase(addTodoListAC, (state, action) => {
-                return {...state, [action.payload.todoList.id]: []}
+                state[action.payload.todoList.id] = []
             })
-
             .addCase(removeTodoListAC, (state, action) => {
                 delete state[action.payload.todolistID]
-                return {...state}
             })
 
     }
