@@ -16,12 +16,6 @@ type PropsType = {
 
 export type FilterType = "all" | "active" | "completed";
 
-export type TodolistType = {
-    id: string;
-    title: string;
-    filter: FilterType;
-};
-
 function App({demo = false}: PropsType) {
     const status = useSelector<AppRootStateType, RequestStatusType>(state => state.app.status)
     const isLoggedIn = useSelector<AppRootStateType, boolean>(state => state.auth.isLoggedIn)
