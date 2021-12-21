@@ -1,17 +1,17 @@
 import React, {useEffect} from "react";
 import "./App.css";
-import {AppBar, Button, CircularProgress, Container, LinearProgress, Toolbar, Typography} from "@material-ui/core";
+import {AppBar, Button, Container, LinearProgress, Toolbar, Typography} from "@material-ui/core";
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "../state/store";
 import {initializeAppTC, RequestStatusType} from "./app-reducer";
 import {ErrorSnackBar} from "../components/ErrorSnackBar/ErrorSnackBar";
-import {Route, Switch, Redirect, useHistory} from "react-router-dom";
+import {Redirect, Route, Switch, useHistory} from "react-router-dom";
 import {TodolistList} from "../features/Todolists/TodolistList";
 import {Login} from "../features/Login/Login";
 import {logoutTC} from "../features/Login/authReducer";
 
 type PropsType = {
-    demo?:boolean
+    demo?: boolean
 }
 
 export type FilterType = "all" | "active" | "completed";
@@ -22,9 +22,8 @@ export type TodolistType = {
     filter: FilterType;
 };
 
-function App({demo = false}:PropsType) {
+function App({demo = false}: PropsType) {
     const status = useSelector<AppRootStateType, RequestStatusType>(state => state.app.status)
-    const isInitialized = useSelector<AppRootStateType, boolean>(state => state.app.isInitialized)
     const isLoggedIn = useSelector<AppRootStateType, boolean>(state => state.auth.isLoggedIn)
     const history = useHistory()
     const dispatch = useDispatch()
@@ -39,17 +38,13 @@ function App({demo = false}:PropsType) {
 
     const onClickHandler = () => dispatch(logoutTC())
 
-    // if (!isInitialized) {
-    //     return <Login/>
-    // }
-
     return (
         <div className="App">
             <ErrorSnackBar/>
             <AppBar position="static">
                 <Toolbar>
                     <Typography variant={"h6"} onClick={handleClick}>
-                      TodoLists
+                        TodoLists
                     </Typography>
                     {isLoggedIn && <Button color="inherit" onClick={onClickHandler}>Log out</Button>}
                 </Toolbar>
@@ -58,7 +53,7 @@ function App({demo = false}:PropsType) {
             <Container fixed>
                 <Switch>
                     <Route path={'/login'} render={() => <Login/>}/>
-                    <Route exact path={'/'} render={() => <TodolistList  demo={demo}/>}/>
+                    <Route exact path={'/'} render={() => <TodolistList demo={demo}/>}/>
                     <Route path={'/404'} render={() => <h1>404: PAGE NOT FOUND</h1>}/>
                     <Redirect from={'*'} to={'/404'}/>
                 </Switch>
