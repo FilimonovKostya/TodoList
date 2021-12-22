@@ -14,6 +14,8 @@ type PropsType = {
     demo?: boolean
 }
 
+//test comit
+
 export type FilterType = "all" | "active" | "completed";
 
 function App({demo = false}: PropsType) {
