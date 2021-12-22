@@ -3,7 +3,7 @@ import {addTodoListAC, removeTodoListAC, setTodoListsAC} from "./todolist-reduce
 import {setAppErrorAC, setAppStatusAC} from "../app/app-reducer";
 import {TaskPriorities, TaskStatuses, TaskType} from "../api/todolist-api";
 import {handleServerAppError, handleServerNetworkError} from "../utils/error-utils";
-import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 
 
 export type TasksStateType = {
@@ -70,11 +70,11 @@ export const updateTaskTC = createAsyncThunk('tasks/updateTask', (payload: { tas
 
     if (task) {
         thunkAPI.dispatch(setAppStatusAC({status: 'loading'}))
-        taskAPI().updateTask(payload.todolistId, payload.taskId, {...apiModel})
+        return taskAPI().updateTask(payload.todolistId, payload.taskId, {...apiModel})
             .then((res) => {
                 if (res.data.resultCode === 0) {
-                    thunkAPI.dispatch(updateTaskAC({todolistId: payload.todolistId, id: payload.taskId, model: {...apiModel}}))
                     thunkAPI.dispatch(setAppStatusAC({status: 'succeeded'}))
+                    return {todolistId: payload.todolistId, id: payload.taskId, model: {...apiModel}}
                 } else {
                     if (res.data.messages.length) {
                         thunkAPI.dispatch(setAppErrorAC({error: res.data.messages[0]}))
@@ -94,13 +94,7 @@ export const updateTaskTC = createAsyncThunk('tasks/updateTask', (payload: { tas
 const slice = createSlice({
     name: 'tasks',
     initialState,
-    reducers: {
-        updateTaskAC: (state, action: PayloadAction<{ todolistId: string, id: string, model: UpdateDomainTaskModelType }>) => {
-            const tasks = state[action.payload.todolistId]
-            const index = tasks.findIndex(el => el.id === action.payload.id)
-            tasks[index] = {...tasks[index], ...action.payload.model}
-        },
-    },
+    reducers: {},
     extraReducers: builder => {
         builder
             .addCase(setTodoListsAC, ((state, action) => {
@@ -127,12 +121,19 @@ const slice = createSlice({
                 }
 
             }))
+            .addCase(updateTaskTC.fulfilled, ((state, action) => {
+                if (action.payload?.todolistId) {
+                    const tasks = state[action.payload.todolistId]
+                    const index = tasks.findIndex(el => el.id === action.payload?.id)
+                    tasks[index] = {...tasks[index], ...action.payload.model}
+                }
+
+            }))
 
     }
 })
 
 export const tasksReducer = slice.reducer
-export const {updateTaskAC} = slice.actions
 
 export type UpdateDomainTaskModelType = {
     title?: string
