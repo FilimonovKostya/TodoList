@@ -43,8 +43,8 @@ export const TodolistList = ({demo = false}: PropsType) => {
         dispatch(thunk)
     }, [dispatch])
 
-    const addTask = useCallback((todoListID: string, title: string) => {
-        dispatch(createTaskTC(title, todoListID))
+    const addTask = useCallback((todolistId: string, title: string) => {
+        dispatch(createTaskTC({title, todolistId}))
     }, [dispatch])
 
     const changeStatus = useCallback((id: string, todoListID: string, status: TaskStatuses) => {

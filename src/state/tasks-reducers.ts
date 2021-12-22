@@ -32,16 +32,27 @@ export const removeTaskTC = createAsyncThunk('tasks/removeTask', (payload: { tod
         })
 })
 
+export const createTaskTC = createAsyncThunk('tasks/createTask', (payload: { title: string, todolistId: string }, thunkAPI) => {
+    thunkAPI.dispatch(setAppStatusAC({status: 'loading'}))
+    return taskAPI().createTask(payload.todolistId, payload.title)
+        .then(res => {
+            if (res.data.resultCode === 0) {
+                const task = res.data.data.item
+                thunkAPI.dispatch(setAppStatusAC({status: 'succeeded'}))
+                return {task}
+            } else {
+                handleServerAppError(res.data, thunkAPI.dispatch)
+            }
+        })
+        .catch(error => {
+            handleServerNetworkError(error.message, thunkAPI.dispatch)
+        })
+})
 
 const slice = createSlice({
     name: 'tasks',
     initialState,
     reducers: {
-        addTaskAC: (state, action: PayloadAction<{ task: TaskType }>) => {
-            const tasks = state[action.payload.task.todoListId]
-            tasks.unshift(action.payload.task)
-
-        },
         updateTaskAC: (state, action: PayloadAction<{ todolistId: string, id: string, model: UpdateDomainTaskModelType }>) => {
             const tasks = state[action.payload.todolistId]
             const index = tasks.findIndex(el => el.id === action.payload.id)
@@ -67,70 +78,22 @@ const slice = createSlice({
                 const index = tasks.findIndex(el => el.id === action.payload.id)
                 tasks.splice(index, 1)
             }))
+            .addCase(createTaskTC.fulfilled, ((state, action) => {
+                if (action.payload?.task) {
+                    const tasks = state[action.payload.task.todoListId]
+                    tasks.unshift(action.payload.task)
+                }
+
+            }))
 
     }
 })
 
 export const tasksReducer = slice.reducer
-export const {updateTaskAC, addTaskAC} = slice.actions
+export const {updateTaskAC} = slice.actions
 
 
-export const createTaskTC = (title: string, todolistId: string) => (dispatch: Dispatch) => {
-    dispatch(setAppStatusAC({status: 'loading'}))
-    taskAPI().createTask(todolistId, title)
-        .then(res => {
-            if (res.data.resultCode === 0) {
-                const task = res.data.data.item
-                dispatch(addTaskAC({task}))
-                dispatch(setAppStatusAC({status: 'succeeded'}))
-            } else {
-                handleServerAppError(res.data, dispatch)
-            }
-        })
-        .catch(error => {
-            handleServerNetworkError(error.message, dispatch)
-        })
-}
-export const updateTaskTC = (taskId: string, todolistId: string, domainModule: UpdateDomainTaskModelType) => (dispatch: Dispatch, getState: () => AppRootStateType) => {
 
-    const state = getState()
-    // @ts-ignore
-    const task = state.tasks[todolistId].find(t => t.id === taskId)
-    if (!task) {
-        throw  new Error('Task not found')
-    }
-    const apiModel: UpdateDomainTaskModelType = {
-        deadline: task.deadline,
-        description: task.description,
-        priority: task.priority,
-        startDate: task.startDate,
-        title: task.title,
-        status: task.status,
-        ...domainModule
-    }
-
-    if (task) {
-        dispatch(setAppStatusAC({status: 'loading'}))
-        taskAPI().updateTask(todolistId, taskId, {...apiModel})
-            .then((res) => {
-                if (res.data.resultCode === 0) {
-                    dispatch(updateTaskAC({todolistId, id: taskId, model: {...apiModel}}))
-                    dispatch(setAppStatusAC({status: 'succeeded'}))
-                } else {
-                    if (res.data.messages.length) {
-                        dispatch(setAppErrorAC({error: res.data.messages[0]}))
-                    } else {
-                        dispatch(setAppErrorAC({error: 'Some error occurred'}))
-                    }
-                    dispatch(setAppStatusAC({status: 'failed'}))
-                }
-            })
-            .catch(error => {
-                handleServerNetworkError(error.message, dispatch)
-            })
-    }
-
-}
 
 
 export type UpdateDomainTaskModelType = {
