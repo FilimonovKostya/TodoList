@@ -47,17 +47,19 @@ export const TodolistList = ({demo = false}: PropsType) => {
         dispatch(createTaskTC({title, todolistId}))
     }, [dispatch])
 
-    const changeStatus = useCallback((id: string, todoListID: string, status: TaskStatuses) => {
-        dispatch(updateTaskTC(id, todoListID, {status}))
+    const changeStatus = useCallback((taskId: string, todolistId: string, status: TaskStatuses) => {
+        // dispatch(updateTaskTC(taskId, todolistId, {status}))
+        dispatch(updateTaskTC({taskId, todolistId, domainModule: {status}}))
     }, [dispatch])
 
     const changeFilter = useCallback((value: FilterType, todolistID: string) => {
         dispatch(changeFilterTodoListAC({filter: value, id: todolistID}))
     }, [dispatch])
 
-    const changeTaskTitle = useCallback((id: string, todolistID: string, title: string) => {
+    const changeTaskTitle = useCallback((taskId: string, todolistId: string, title: string) => {
 
-        dispatch(updateTaskTC(id, todolistID, {title}))
+        // dispatch(updateTaskTC(id, todolistID, {title}))
+        dispatch(updateTaskTC({taskId, todolistId, domainModule: {title}}))
     }, [dispatch])
 
     const changeTodoListTitle = useCallback((id: string, newTitle: string) => {
